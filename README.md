@@ -2,6 +2,12 @@
 
 Hello!
 
+WebView is android web browser created from the Google WebViewClient and WebChromeClient. 
+
+WebView is programmed in Java Language.
+
+@2018-2020 All Rights Reserved by Melvin Jones Gallano Repol
+
 I hope you'd like my work. I'll keep improving the WebView, if you have any suggestions, comments or reports feel free to reach me.
 
 Gmail: mrepol742@gmail.com
