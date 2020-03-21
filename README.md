@@ -26,3 +26,5 @@ Instagram: https://instagram.com/mrepol742
 Twitter: https://twitter.com/mrepol742
 Website: https://droidmj.000webhostapp.com
 
+
+2018 - 2020 ©DROID MJ
