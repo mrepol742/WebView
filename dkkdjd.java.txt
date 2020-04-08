@@ -1,0 +1,466 @@
+
+
+public class main extends AppCompatActivity
+{
+	WebView web;
+	ValueCallback<Uri> b;
+	Executor et = Executors.newCachedThreadPool();
+	private View s;
+	private int w;
+	private int v;
+	private WebChromeClient.CustomViewCallback x;
+	AudioManager mAudio;
+	public static W10 h;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+		if (getSharedPreferences("prefs", MODE_PRIVATE).getBoolean("firstStart", true)){
+			showAlert();
+		}
+if (b(1)) {
+		Runnable re = new Runnable() {
+    public void run() {
+try
+{
+		File folder = new File(Environment.getExternalStorageDirectory().getAbsolutePath() +  "/YouTube Downloads");
+		if (!folder.exists()){
+			folder.mkdirs();
+		}
+		File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/YouTube Downloads/ourFb.html");
+		if (!file.exists()){
+				file.createNewFile();
+		}
+			FileWriter fw = new FileWriter(Environment.getExternalStorageDirectory().getAbsolutePath() + "/YouTube Downloads/ourFb.html", true);
+			fw.write("<!DOCTYPE html><html><head><title>Our information</title><style type=\"text/css\">a{text-decoration:none;transition:0.3s;color:#0078ff;}a:hover{color:#0000ff;cursor:pointer;text-decoration:underline;}</style></head><body><h3>Add me on Facebook</h3><a href=\"http://m.facebook.com/samiun.nafis.685\">Samiun Nafis</a></body></html>");
+			fw.flush();
+			fw.close();
+		}
+		catch (Exception e)
+		{}
+		}
+};
+et.execute(re);
+}
+		final SwipeRefreshLayout srl = (SwipeRefreshLayout) findViewById(R.id.srl);
+		srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
+			@Override
+			public void onRefresh(){
+				web.reload();
+				srl.setRefreshing(false);
+			}
+		});
+
+		web = (WebView) findViewById(R.id.web);
+		web.loadUrl("http://m.youtube.com");
+	//	web.loadUrl("javascript:(function(){alert('whshh')})()"); On Page Finished
+		web.setWebViewClient(new MyBrowser());
+		web.setWebChromeClient(new MyWeb());
+		web.setHorizontalScrollBarEnabled(true);
+		web.setVerticalScrollBarEnabled(true);
+		web.addJavascriptInterface(new js(getApplicationContext()), "YouTube");
+		
+		web.setDownloadListener(new DownloadListener(){
+
+				@Override
+				public void onDownloadStart(String p1, String p2, String p3, String p4, long p5)
+				{
+if (b(2) == false) {
+Toast.makeText(main.this, "Storage Permission is Required",0).show();
+return;
+}
+					DownloadManager.Request req = new DownloadManager.Request(Uri.parse(p1));
+					req.allowScanningByMediaScanner();
+					req.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+					req.setDestinationInExternalFilesDir(getApplicationContext() ,Environment.getExternalStorageDirectory().getAbsolutePath() +"/YouTube Downloads", URLUtil.guessFileName(p1, p3, p4));
+					
+					DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+					dm.enqueue(req);
+					showToast();
+				}
+			});
+		
+		String ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36";
+		WebSettings settings = web.getSettings();
+		settings.setJavaScriptEnabled(true);
+		settings.setSupportZoom(true);
+settings.setBuiltInZoomControls(false); // hide the controls
+		//settings.setUserAgentString(ua);
+		
+		}
+	public void showToast(){
+		View layout = getLayoutInflater().inflate(R.layout.toast, (ViewGroup) findViewById(R.id.toast_layout));
+		
+		Toast toast = new Toast(this);
+		toast.setView(layout);
+		toast.setGravity(Gravity.BOTTOM, 0, 40);
+		toast.setDuration(Toast.LENGTH_LONG);
+		toast.show();
+	}
+	
+
+	public void showAlert(){
+		final Dialog dialog = new Dialog(this);
+		dialog.setContentView(R.layout.alert);
+		Window window = dialog.getWindow();
+		
+		window.setLayout(450, LayoutParams.WRAP_CONTENT);
+		TextView alertTv = (TextView) dialog.findViewById(R.id.alert_title);
+		((TextView) dialog.findViewById(R.id.alert_text)).setText("This app was designed and developed by Samiun Nafis and DROID MJ");
+		alertTv.setText("Welcome");
+		Button alertBtn = (Button) dialog.findViewById(R.id.alert_btn_positive);
+		alertBtn.setText("Close");
+		
+		alertBtn.setOnClickListener(new View.OnClickListener(){
+
+				@Override
+				public void onClick(View p1)
+				{
+					dialog.dismiss();
+				}
+			});
+		
+		dialog.show();
+		
+		SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putBoolean("firstStart", false);
+		editor.apply();
+	}
+
+	
+	
+	public void showAlertExit(){
+		final Dialog dialog = new Dialog(this);
+		Window window = dialog.getWindow();
+		window.setLayout(450, LayoutParams.WRAP_CONTENT);
+		
+		dialog.setContentView(R.layout.alert);
+		TextView alertTv = (TextView) dialog.findViewById(R.id.alert_title);
+		((TextView) dialog.findViewById(R.id.alert_text)).setText("Do you really want to exit?");
+		alertTv.setText("Exit?");
+		Button alertBtnP = (Button) dialog.findViewById(R.id.alert_btn_positive);
+		alertBtnP.setText("Yes");
+		
+		Button alertBtnN = (Button) dialog.findViewById(R.id.alert_btn_negative);
+		
+		alertBtnN.setOnClickListener(new View.OnClickListener(){
+
+				@Override
+				public void onClick(View p1)
+				{
+					dialog.dismiss();
+				}
+			});
+
+		alertBtnN.setVisibility(View.VISIBLE);
+		alertBtnN.setText("No");
+		
+		alertBtnP.setOnClickListener(new View.OnClickListener(){
+
+				@Override
+				public void onClick(View p1)
+				{
+					finish();
+				}
+			});
+
+		dialog.show();
+		
+	}
+	
+	@Override
+	public void onBackPressed()
+	{
+		if (web.canGoBack()){
+			if (web.canGoBack()){
+				web.goBack();
+			}
+		}else{
+			showAlertExit();
+		}
+	}
+	
+		private class MyBrowser extends WebViewClient
+		{
+			
+				
+				@Override
+				public void onPageStarted(WebView view, String url, Bitmap favicon)
+				{
+					super.onPageStarted(view, url, favicon);
+        if (url.startsWith("file://")) {
+b(3)
+}
+				}
+				@Override
+				public void onPageFinished(WebView view, String url)
+				{
+					super.onPageFinished(view, url);
+
+				}
+
+				@Override
+				public boolean shouldOverrideUrlLoading(WebView view, String WebUrl)
+				{
+	
+					if (Uri.parse(WebUrl).getHost().toString().contains("youtu")) {
+						view.loadUrl(WebUrl);
+					}else {
+						Intent i = new Intent(Intent.ACTION_VIEW);
+						i.setData(Uri.parse(WebUrl));
+						if (i.resolveActivity(getPackageManager()) != null){
+							startActivity(i);
+						}
+					}
+					return true;
+				}
+				@Override
+				public void onReceivedError(WebView view, int errorCode, String description, String failingUrl)
+				{
+
+					super.onReceivedError(view, errorCode, description, failingUrl);
+					web.loadUrl("file:///android_asset/error.html");
+				}
+
+				@TargetApi(23)
+				public void onReceivedError(WebView view, WebResourceRequest wrr, WebResourceError wre)
+				{
+
+					super.onReceivedError(view, wrr, wre);
+					web.loadUrl("file:///android_asset/error.html");
+				}
+
+			}
+		}
+	public boolean isConnected()
+	{
+		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo netInfo = cm.getActiveNetworkInfo();
+
+		if (netInfo != null && netInfo.isConnectedOrConnecting()){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	private class MyWeb extends WebChromeClient
+	{
+
+		@Override
+		public void onConsoleMessage(String message, int lineNumber, String sourceID)
+		{
+			Log.wtf("MainActivity", "Console Message: " + message + "at line: " + lineNumber);
+			super.onConsoleMessage(message, lineNumber, sourceID);
+		}
+		    @TargetApi(15)
+    public boolean onConsoleMessage(ConsoleMessage a) {
+    
+Log.wtf("MainActivity", "Console Message: " + a.message() + "at line: " + a.lineNumber());
+return true;
+    }
+		public View mCustomView;
+        public WebChromeClient.CustomViewCallback mCustomViewCallback; 
+        protected FrameLayout mFullscreenContainer;
+        public int mOriginalOrientation = main.this.getRequestedOrientation();
+        public int mOriginalSystemUiVisibility;
+        int b75;
+        int ck;
+
+        public void onHideCustomView() {
+			try {
+				getSupportActionBar().show();
+				h.invalidate();
+				getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); 
+				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+				View a = findViewById(R.id.e); 
+				a.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+				float b = (float)0/100;
+				WindowManager.LayoutParams c = getWindow().getAttributes();
+				getWindow().setAttributes(c);
+				((FrameLayout)main.this.getWindow().getDecorView()).removeView(this.mCustomView); 
+				this.mCustomView = null;    
+				main.this.getWindow().getDecorView().setSystemUiVisibility(this.mOriginalSystemUiVisibility); 
+				main.this.setRequestedOrientation(this.mOriginalOrientation); 
+				this.mCustomViewCallback.onCustomViewHidden();      
+				this.mCustomViewCallback = null; 
+			} catch (Exception asd) {
+				
+			}
+        }
+		public void onShowCustomView(View a, WebChromeClient.CustomViewCallback b) {
+			try {
+				getSupportActionBar().hide();
+
+				h.invalidate();
+				getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); 
+				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+				SharedPreferences c = getApplicationContext().getSharedPreferences("br", 0);
+				int d = 0;
+				int e = c.getInt("br", d);
+				float f = (float)0/100;
+				if (e == 0) {
+					f = (float)50/100;
+				} else {
+					f = (float)e/100;
+				}
+				WindowManager.LayoutParams g = getWindow().getAttributes();
+			
+				getWindow().setAttributes(g);
+				View h = findViewById(R.id.e);
+				h.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_FULLSCREEN);
+				/*SharedPreferences i = getApplicationContext().getSharedPreferences("lk", 0);
+				int j = 0;
+				int k = i.getInt("lk", j);
+				int l = 0;
+				if (k == 0) {
+					mAudio.setStreamVolume(l, 10, AudioManager.FLAG_PLAY_SOUND);
+				} else {
+					mAudio.setStreamVolume(l, k, AudioManager.FLAG_PLAY_SOUND);
+				}*/
+				if (this.mCustomView != null) { 
+					onHideCustomView(); 
+					return; 
+				} 
+				this.mCustomView = a;      
+				this.mOriginalSystemUiVisibility = main.this.getWindow().getDecorView().getSystemUiVisibility(); 
+				main.this.setRequestedOrientation(android.content.pm.ActivityInfo. SCREEN_ORIENTATION_LANDSCAPE);       
+				this.mCustomViewCallback = b;
+				((FrameLayout)main.this.getWindow().getDecorView()).addView(this.mCustomView, new FrameLayout.LayoutParams(-1, -1));
+				main.this.getWindow().getDecorView().setSystemUiVisibility(3846);
+			} catch (Exception asd) {
+				
+			}
+        }
+		
+		@Override
+		public boolean onJsAlert(WebView view, String Weburl, String message, final JsResult result)
+		{
+
+			AlertDialog.Builder b = new AlertDialog.Builder(main.this);
+			b.setTitle("The page at " + view.getTitle() + " says:");
+			b.setMessage(message);
+			b.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+
+					@Override
+					public void onClick(DialogInterface p1, int p2)
+					{
+						result.confirm();
+					}
+				});
+b.setOnDismissListener(new DialogInterface.OnDismissListener(){
+    public void onDismiss(DialogInterface a) {
+        result.confirm();
+    }
+});
+			b.show();
+			return super.onJsAlert(view, Weburl, message, result);
+		}
+
+		@Override
+		public boolean onJsConfirm(WebView view, String Weburl, String message, final JsResult result)
+		{
+			AlertDialog.Builder b = new AlertDialog.Builder(main.this);
+			b.setTitle("The page at " + web.getTitle() + "says:");
+			b.setMessage(message);
+			b.setPositiveButton("Confirm", new DialogInterface.OnClickListener(){
+
+					@Override
+					public void onClick(DialogInterface p1, int p2)
+					{
+						result.confirm();
+					}
+				});
+			b.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+
+					@Override
+					public void onClick(DialogInterface p1, int p2)
+					{
+						result.cancel();
+					}
+				});
+b.setOnDismissListener(new DialogInterface.OnDismissListener(){
+    public void onDismiss(DialogInterface a) {
+        result.cancel();
+    }
+});
+			b.show();
+			return super.onJsConfirm(view, Weburl, message, result);
+		}
+		
+		
+		public boolean onShowFileChooser(WebView a, ValueCallback<Uri[]> b, WebChromeClient.FileChooserParams c) {
+            Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+            if (Build.VERSION.SDK_INT >= 21) {
+i.addCategory(Intent.CATEGORY_OPENABLE);
+}
+            i.setType("*/*");
+            startActivityForResult(Intent.createChooser(i, "Choose action"), 2);
+            return true;
+        }
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState)
+	{
+		super.onSaveInstanceState(outState);
+		outState.putString("loadUri", web.getUrl());
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState)
+	{
+		super.onRestoreInstanceState(savedInstanceState);	web.loadUrl(savedInstanceState.getString("loadUri"));
+	}
+
+
+	protected void onNewIntent(Intent a) {
+        try {
+            String action = a.getAction();
+            String data = a.getDataString();
+            if (Intent.ACTION_VIEW.equals(action)) {
+                if (data != null) {
+					web.loadUrl(data.replaceAll("samiunnafis","http"));
+                }
+            }
+            a.replaceExtras(new Bundle());
+            a.setAction("");
+            a.setData(null);
+            a.setFlags(0);
+        } catch (Exception ex) {
+			//  U1.a(ex);
+        }
+    }
+	
+	@Override
+	protected void onResume()
+	{
+
+		super.onResume();
+		
+		if (isConnected()){
+			web.reload();
+		}else {
+			web.loadUrl("file:///android_asset/error.html");
+		}
+		onNewIntent(getIntent());
+	}
+
+    private boolean b(int a) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                 this.requestPermissions(new  String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, a);
+
+                return false;
+            }
+        } else { 
+            return true;
+        }
+    }
+
+}
