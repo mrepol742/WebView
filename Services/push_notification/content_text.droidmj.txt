@@ -1,1 +1,1 @@
-Test Content Text
+WebView v5.2 will be release on March 1, this includeds multiple fixes and improvements. Stay tune with new update.
