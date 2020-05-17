@@ -18,7 +18,6 @@ WebView is program to avoid battery drain and memory issues cause by the app ser
 I hope you'd like my work. I'll keep improving the WebView, if you have any suggestions, comments or reports feel free to reach me.
 
 Gmail: mrepol742@gmail.com
-WhatsApp:  https://wa.me/639283559507
 DROID MJ Facebook Page: https://fb.me/mrepol742.droidmj 
 WebView Facebook Page: https://fb.me/mrepol742.webview
 Facebook: https://fb.me/mrepol742
