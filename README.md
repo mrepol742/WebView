@@ -1,6 +1,6 @@
 # WebView 
 
-Hello!
+## Hello!
 
 WebView is android web browser created from The Open Source Project of WebViewClient and WebChromeClient. 
 
@@ -12,7 +12,7 @@ We're working 24/7 to maintain the app and provide much better browsing experien
 
 WebView is program to avoid battery drain and memory issues cause by the app services. 
 
-Developed and Program by DROID MJ
+>> Developed and Program by DROID MJ | Melvin Jones Gallano Repol
 
 
 I hope you'd like my work. I'll keep improving the WebView, if you have any suggestions, comments or reports feel free to reach me.
@@ -27,4 +27,4 @@ Twitter: https://twitter.com/mrepol742
 Website: https://droidmj.000webhostapp.com
 
 
-2018 - 2020 ©DROID MJ
+>> 2018 - 2020 ©DROID MJ
