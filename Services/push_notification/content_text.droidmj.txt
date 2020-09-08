@@ -1,1 +1,1 @@
-WebView v5.2.1 will be release on March 1, this includeds multiple fixes and improvements. Stay tune with new update.
+This version of WebView is now obsolete and wont receive any updates, notification, patch and upgrades in future.
