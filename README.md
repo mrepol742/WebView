@@ -12,18 +12,9 @@ We're working 24/7 to maintain the app and provide much better browsing experien
 
 WebView is program to avoid battery drain and memory issues cause by the app services. 
 
->> Developed and Program by DROID MJ | Melvin Jones Gallano Repol
+>> Developed and Program by Melvin Jones Gallano Repol
 
 
 I hope you'd like my work. I'll keep improving the WebView, if you have any suggestions, comments or reports feel free to reach me.
-
->>Gmail: mrepol742@gmail.com
->>DROID MJ Facebook Page: https://fb.me/mrepol742.droidmj 
->>WebView Facebook Page: https://fb.me/mrepol742.webview
->>Facebook: https://fb.me/mrepol742
->>Instagram: https://instagram.com/mrepol742
->>Twitter: https://twitter.com/mrepol742
->>Website: https://droidmj.000webhostapp.com
-
 
 >> 2018 - 2020 ©DROID MJ
